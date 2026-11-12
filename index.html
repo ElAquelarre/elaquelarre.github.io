@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aquelarre — Próximamente</title>
+  <meta name="description" content="Aquelarre, comunidad gamer femenina. Nuestra web llega pronto.">
+  <meta name="theme-color" content="#2A1638">
+  <meta property="og:title" content="Aquelarre — Próximamente">
+  <meta property="og:description" content="Comunidad gamer femenina. El aquelarre se está preparando.">
+  <meta property="og:image" content="https://aquelarregg.com/assets/logo-aquelarre.png">
+  <meta property="og:url" content="https://aquelarregg.com/">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --night:   #1A0D24;
+      --deep:    #2A1638;
+      --purple:  #44255A;
+      --mauve:   #684C65;
+      --gold:    #EDB63C;
+      --gold-l:  #F6D27A;
+      --text:    #F1E9F3;
+      --muted:   #BBA6C2;
+      --line:    rgba(237, 182, 60, 0.45);
+      --ease:    cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { height: 100%; }
+
+    body {
+      min-height: 100dvh;
+      background-color: var(--night);
+      background-image:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(104, 76, 101, 0.55) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 50% at 10% 100%, rgba(68, 37, 90, 0.9) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 95% 0%, rgba(237, 182, 60, 0.10) 0%, transparent 70%),
+        linear-gradient(160deg, var(--purple) 0%, var(--deep) 55%, var(--night) 100%);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    /* grain */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.08;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* stars */
+    .stars { position: fixed; inset: 0; pointer-events: none; }
+    .stars span {
+      position: absolute;
+      width: 2px; height: 2px;
+      border-radius: 50%;
+      background: var(--gold-l);
+      opacity: 0;
+      animation: twinkle 5s var(--ease) infinite;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.6); }
+      50%      { opacity: 0.8; transform: scale(1); }
+    }
+
+    /* content, no frame */
+    .frame {
+      position: relative;
+      width: min(100%, 640px);
+      padding: 48px 0 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    /* logo + ring */
+    .emblem {
+      position: relative;
+      width: min(70vw, 320px);
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      margin: 8px 0 52px;
+      animation: rise 1.2s var(--ease) both;
+    }
+    .ring {
+      position: absolute;
+      inset: -14%;
+      color: var(--gold);
+      opacity: 0.35;
+      animation: spin 90s linear infinite;
+    }
+    .logo {
+      position: relative;
+      width: 62%;
+      transform: translateY(-2%);
+      height: auto;
+      filter: drop-shadow(0 6px 24px rgba(237, 182, 60, 0.30));
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(16px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+      animation: rise 1.2s 0.15s var(--ease) both;
+    }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 8vw, 3.25rem);
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+      background: linear-gradient(180deg, var(--gold-l) 0%, var(--gold) 60%, #C98F1F 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: rise 1.2s 0.25s var(--ease) both;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: min(100%, 280px);
+      margin: 22px auto;
+      color: var(--gold);
+      animation: rise 1.2s 0.35s var(--ease) both;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--line));
+    }
+    .divider::after { background: linear-gradient(90deg, var(--line), transparent); }
+
+    .lead {
+      max-width: 34ch;
+      font-weight: 300;
+      font-size: 1.0625rem;
+      color: var(--text);
+      animation: rise 1.2s 0.45s var(--ease) both;
+    }
+
+    .social {
+      margin-top: 32px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 22px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--gold-l);
+      text-decoration: none;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      background: rgba(237, 182, 60, 0.06);
+      transition: transform 0.4s var(--ease), background-color 0.4s var(--ease), border-color 0.4s var(--ease);
+      animation: rise 1.2s 0.55s var(--ease) both;
+    }
+    .social:hover { transform: translateY(-2px); background-color: rgba(237, 182, 60, 0.14); border-color: var(--gold); }
+    .social:active { transform: translateY(0) scale(0.98); }
+    .social:focus-visible { outline: 2px solid var(--gold-l); outline-offset: 4px; }
+    .social svg { width: 18px; height: 18px; }
+
+    .sign {
+      margin-top: 36px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.8125rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      animation: rise 1.2s 0.65s var(--ease) both;
+    }
+
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .stars span { opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars" aria-hidden="true"></div>
+
+  <main class="frame">
+
+    <div class="emblem">
+      <svg class="ring" viewBox="0 0 200 200" fill="none" stroke="currentColor" aria-hidden="true">
+        <circle cx="100" cy="100" r="96" stroke-width="0.6" stroke-dasharray="0.6 3.2"/>
+        <circle cx="100" cy="100" r="88" stroke-width="0.4"/>
+        <g fill="currentColor" stroke="none">
+          <circle cx="100" cy="12" r="4"/>
+          <circle cx="188" cy="100" r="4"/>
+          <circle cx="100" cy="188" r="4"/>
+          <circle cx="12" cy="100" r="4"/>
+        </g>
+        <g fill="#2A1638" stroke="none">
+          <circle cx="102.5" cy="11" r="3.4"/>
+          <circle cx="12" cy="100" r="3.6"/>
+          <circle cx="97.5" cy="189" r="3.4"/>
+        </g>
+        <g fill="currentColor" stroke="none" opacity="0.8">
+          <circle cx="162.2" cy="37.8" r="1.4"/>
+          <circle cx="162.2" cy="162.2" r="1.4"/>
+          <circle cx="37.8" cy="162.2" r="1.4"/>
+          <circle cx="37.8" cy="37.8" r="1.4"/>
+        </g>
+      </svg>
+      <img class="logo" src="assets/logo-aquelarre.png" width="836" height="1000" alt="Aquelarre">
+    </div>
+
+    <p class="eyebrow">Comunidad gamer femenina</p>
+    <h1>Próximamente</h1>
+
+    <div class="divider" aria-hidden="true">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 9.5 13A8 8 0 0 1 12 2z"/></svg>
+    </div>
+
+    <p class="lead">El aquelarre se está preparando. Muy pronto vas a encontrar aquí nuestros eventos, torneos y todo lo que hacemos por más mujeres en el gaming.</p>
+
+    <a class="social" href="https://www.instagram.com/aql.team/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="5"/>
+        <circle cx="12" cy="12" r="4"/>
+        <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
+      </svg>
+      Síguenos en @aql.team
+    </a>
+
+    <p class="sign">Hasta la próxima luna llena</p>
+  </main>
+
+  <script>
+    (function () {
+      var box = document.querySelector('.stars');
+      for (var i = 0; i < 40; i++) {
+        var s = document.createElement('span');
+        s.style.left = Math.random() * 100 + '%';
+        s.style.top = Math.random() * 100 + '%';
+        s.style.animationDelay = (Math.random() * 5).toFixed(2) + 's';
+        s.style.animationDuration = (3 + Math.random() * 4).toFixed(2) + 's';
+        box.appendChild(s);
+      }
+    })();
+  </script>
+</body>
+</html>
