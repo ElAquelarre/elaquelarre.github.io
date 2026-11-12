@@ -1,0 +1,90 @@
+# Configuración del panel Pages CMS (https://app.pagescms.org)
+# Las notas y autoras se guardan en src/content/ y las imágenes en public/media/.
+
+media:
+  input: public/media
+  output: /media
+  categories: [image]
+
+content:
+  - name: notas
+    label: Notas
+    type: collection
+    path: src/content/notas
+    format: yaml-frontmatter
+    filename:
+      template: "{year}-{month}-{day}-{primary}.md"
+      field: false
+    view:
+      primary: titulo
+      fields: [titulo, fecha, autora, borrador]
+    fields:
+      - name: titulo
+        label: Título
+        type: string
+        required: true
+      - name: fecha
+        label: Fecha
+        type: date
+        required: true
+      - name: autora
+        label: Autora
+        type: reference
+        required: true
+        description: Elige tu perfil. Tu nombre y tu foto salen en la nota.
+        options:
+          collection: autoras
+          value: "{path}"
+          label: "{nombre}"
+      - name: categoria
+        label: Categoría
+        type: select
+        options:
+          values: [Noticia, Opinión, Comunidad, Eventos]
+      - name: resumen
+        label: Resumen
+        type: text
+        description: Una o dos frases. Sale en la lista de notas.
+      - name: portada
+        label: Imagen de portada
+        type: image
+        description: Súbela liviana (menos de 500 KB si se puede).
+        options:
+          rename: safe
+      - name: borrador
+        label: Borrador (todavía no publicar)
+        type: boolean
+        default: false
+        description: Márcalo si la nota no está lista. No saldrá en la web hasta que lo desmarques.
+      - name: body
+        label: Texto de la nota
+        type: rich-text
+
+  - name: autoras
+    label: Autoras
+    type: collection
+    path: src/content/autoras
+    format: yaml-frontmatter
+    filename:
+      template: "{primary}.md"
+      field: create
+    view:
+      primary: nombre
+      fields: [nombre, usuario, rol]
+    fields:
+      - name: nombre
+        label: Nombre
+        type: string
+        required: true
+      - name: usuario
+        label: Usuario o nick
+        type: string
+      - name: rol
+        label: Rol en Aquelarre
+        type: string
+      - name: foto
+        label: Foto de perfil
+        type: image
+        description: Cuadrada y liviana. Se ve pequeñita junto a tus notas.
+        options:
+          rename: safe

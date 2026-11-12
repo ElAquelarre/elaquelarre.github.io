@@ -1,0 +1,20 @@
+---
+import type { Autora } from '../lib/notas';
+import { iniciales } from '../lib/notas';
+
+interface Props {
+  autora?: Autora;
+}
+const { autora } = Astro.props;
+const nombre = autora?.data.nombre ?? 'Aquelarre';
+const foto = autora?.data.foto;
+---
+<div style="display: flex; align-items: center; gap: 12px">
+  {foto
+    ? <img class="avatar" src={foto} alt="" width="44" height="44" loading="lazy" />
+    : <span class="avatar" aria-hidden="true">{iniciales(nombre)}</span>}
+  <div style="display: flex; flex-direction: column; line-height: 1.3">
+    <strong>{nombre}</strong>
+    {autora?.data.usuario && <span style="font-size: 14px; color: var(--muted)">{autora.data.usuario}</span>}
+  </div>
+</div>
