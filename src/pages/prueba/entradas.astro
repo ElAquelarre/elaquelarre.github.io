@@ -1,0 +1,16 @@
+---
+import Prueba from '../../layouts/Prueba.astro';
+import PreguntaEquipo from '../../components/PreguntaEquipo.astro';
+---
+<Prueba title="Entradas">
+  <section class="wrap" style="padding-top: 72px; padding-bottom: 40px; display: flex; flex-direction: column; gap: 20px">
+    <p class="kicker">Eventos</p>
+    <h1 class="titulo">Entradas</h1>
+  </section>
+  <PreguntaEquipo
+    pregunta="¿Vendemos las entradas con una ticketera o directamente aquí en la web?"
+    a={{ t: 'A. Ticketera externa', d: 'La ticketera cobra, envía la entrada y controla el aforo. Esta página muestra los eventos y el botón de compra lleva allá.' }}
+    b={{ t: 'B. Aquí en la web', d: 'Pago con pasarela dentro de aquelarregg.com y entradas propias. Requiere pasarela de pago, base de datos y control de aforo.' }}
+    hueco="LISTA DE EVENTOS CON «COMPRAR ENTRADA» — se diseña cuando el equipo decida"
+  />
+</Prueba>

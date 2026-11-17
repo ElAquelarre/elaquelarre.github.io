@@ -1,0 +1,16 @@
+---
+import Prueba from '../../layouts/Prueba.astro';
+import PreguntaEquipo from '../../components/PreguntaEquipo.astro';
+---
+<Prueba title="Torneos">
+  <section class="wrap" style="padding-top: 72px; padding-bottom: 40px; display: flex; flex-direction: column; gap: 20px">
+    <p class="kicker">Torneos</p>
+    <h1 class="titulo">Torneos</h1>
+  </section>
+  <PreguntaEquipo
+    pregunta="¿Nos asociamos con una plataforma de torneos o los hacemos aquí en la web?"
+    a={{ t: 'A. Plataforma aliada', d: 'Inscripciones y brackets en la plataforma. Esta página muestra el próximo torneo, los pasados y el botón para inscribirse allá.' }}
+    b={{ t: 'B. Aquí en la web', d: 'Inscripción, brackets y resultados dentro de aquelarregg.com. Requiere cuentas de usuaria y base de datos.' }}
+    hueco="CONTENIDO DE LA PÁGINA — se diseña cuando el equipo decida"
+  />
+</Prueba>

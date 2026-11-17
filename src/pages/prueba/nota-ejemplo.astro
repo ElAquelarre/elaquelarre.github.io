@@ -1,0 +1,41 @@
+---
+import Prueba from '../../layouts/Prueba.astro';
+const p = '/prueba';
+---
+<Prueba title="Nota de ejemplo">
+  <style>
+    .cuerpo p { margin: 0 0 20px; font-size: 19px; line-height: 1.8; }
+  </style>
+  <article style="max-width: 760px; margin: 0 auto; padding: 56px 16px 40px; display: flex; flex-direction: column; gap: 22px">
+    <a href={`${p}/notas/`} style="font-size: 15px; font-weight: 600">← Todas las notas</a>
+    <span class="meta">Noticia · [FECHA]</span>
+    <h1 style="margin: 0; font-size: clamp(36px, 5vw, 60px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05">[TÍTULO DE LA NOTA]</h1>
+    <p style="margin: 0; font-size: 22px; line-height: 1.6; color: #333">[Bajada: resumen de la nota en una o dos frases]</p>
+    <div style="display: flex; align-items: center; gap: 12px">
+      <div class="ph" style="width: 48px; height: 48px; border-radius: 999px; padding: 0">foto</div>
+      <div><strong style="display: block">[AUTORA]</strong><span style="font-size: 14px; color: var(--muted)">[N] min de lectura</span></div>
+    </div>
+    <div class="ph" style="height: clamp(220px, 40vw, 420px); border-radius: 16px; margin: 12px 0">IMAGEN PRINCIPAL</div>
+    <div class="cuerpo">
+      <p>[Párrafo de la nota]</p>
+      <p>[Párrafo de la nota]</p>
+      <h2 style="margin: 12px 0 18px; font-size: 28px; font-weight: 800">[Subtítulo]</h2>
+      <p>[Párrafo de la nota]</p>
+      <blockquote style="margin: 8px 0 28px; padding: 4px 0 4px 24px; border-left: 3px solid var(--ink); font-size: 24px; font-weight: 700; line-height: 1.4">[Cita destacada]</blockquote>
+      <p>[Párrafo de la nota]</p>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; border-top: 1.5px solid var(--ink); padding-top: 20px">
+      <strong style="margin-right: 8px">Compartir</strong>
+      <a class="btn" href="#">WhatsApp</a><a class="btn" href="#">X</a><a class="btn" href="#">Copiar enlace</a>
+    </div>
+  </article>
+
+  <section class="wrap" aria-labelledby="h-mas" style="padding-top: 48px; padding-bottom: 64px; border-top: 1.5px solid var(--ink)">
+    <h2 id="h-mas" style="margin: 0 0 24px; font-size: 28px; font-weight: 800">Sigue leyendo</h2>
+    <div class="grid">
+      {[1, 2, 3].map(() => (
+        <a class="lift card" href={`${p}/nota-ejemplo/`}><div class="ph" style="height: 190px; border-radius: 16px">IMAGEN</div><strong style="font-size: 20px">[TÍTULO DE LA NOTA]</strong></a>
+      ))}
+    </div>
+  </section>
+</Prueba>

@@ -1,0 +1,25 @@
+---
+// Bloque "pregunta para el equipo" de Torneos y Entradas: la página se diseña cuando el equipo decida.
+interface Props {
+  pregunta: string;
+  a: { t: string; d: string };
+  b: { t: string; d: string };
+  hueco: string;
+}
+const { pregunta, a, b, hueco } = Astro.props;
+---
+<section aria-labelledby="h-dec" style="margin: 0 max(16px, 4%) 72px; border: 2px dashed var(--ink); border-radius: 20px; padding: clamp(20px, 4vw, 40px); display: flex; flex-direction: column; gap: 28px">
+  <div style="display: flex; flex-direction: column; gap: 10px">
+    <span style="align-self: flex-start; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; background: var(--ink); color: #fff; border-radius: 999px; padding: 4px 12px">Pregunta para el equipo</span>
+    <h2 id="h-dec" style="margin: 0; font-size: clamp(26px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1">{pregunta}</h2>
+  </div>
+  <div class="row" style="gap: 24px">
+    {[a, b].map((o) => (
+      <div class="box" style="flex: 1 1 300px; padding: 24px; display: flex; flex-direction: column; gap: 10px">
+        <strong style="font-size: 22px">{o.t}</strong>
+        <p style="margin: 0; color: #333; line-height: 1.7">{o.d}</p>
+      </div>
+    ))}
+  </div>
+  <div class="ph" style="height: 220px; border-radius: 12px">{hueco}</div>
+</section>

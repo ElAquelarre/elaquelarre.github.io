@@ -1,0 +1,79 @@
+---
+import Prueba from '../../layouts/Prueba.astro';
+import { getCollection } from 'astro:content';
+
+// El equipo sale de las fichas reales de Autoras (Pages CMS); las creadoras aún son ejemplo.
+const orden = ['alejandra', 'ana-maria', 'gabriela'];
+const autoras = (await getCollection('autoras')).sort((a, b) => orden.indexOf(a.id) - orden.indexOf(b.id));
+const personas = [
+  ...autoras.map((a) => ({
+    tag: 'Equipo',
+    nombre: a.data.usuario ? `${a.data.nombre} · ${a.data.usuario}` : a.data.nombre,
+    rol: a.data.rol ?? '',
+    foto: a.data.foto,
+  })),
+  { tag: 'Creadora', nombre: '[NOMBRE CREADORA]', rol: 'Twitch · [JUEGO]', foto: null },
+  { tag: 'Creadora', nombre: '[NOMBRE CREADORA]', rol: 'TikTok · [TEMA]', foto: null },
+  { tag: 'Creadora', nombre: '[NOMBRE CREADORA]', rol: 'Cosplay', foto: null },
+  { tag: 'Creadora', nombre: '[NOMBRE CREADORA]', rol: 'YouTube · [TEMA]', foto: null },
+  { tag: 'Creadora', nombre: '[NOMBRE CREADORA]', rol: 'Esports · [JUEGO]', foto: null },
+];
+---
+<Prueba title="Nosotras">
+  <section class="wrap row" style="gap: 40px; padding-top: 72px; padding-bottom: 56px; align-items: end">
+    <div style="flex: 3 1 480px; display: flex; flex-direction: column; gap: 20px">
+      <p class="kicker">Nosotras</p>
+      <h1 class="titulo">Somos una comunidad de mujeres en el gaming.</h1>
+      <p style="margin: 0; font-size: 20px; line-height: 1.7; max-width: 46ch">[Párrafo corto: qué es Aquelarre, desde cuándo existe, dónde está y qué hace]</p>
+    </div>
+    <div class="ph" style="flex: 2 1 280px; height: 360px">FOTO DE LA COMUNIDAD EN UN EVENTO</div>
+  </section>
+
+  <section class="wrap row" aria-labelledby="h-por" style="gap: 40px; padding-top: 56px; padding-bottom: 56px; border-top: 1.5px solid var(--ink)">
+    <h2 id="h-por" class="sec" style="flex: 1 1 240px">Por qué existimos</h2>
+    <div style="flex: 2 1 420px; display: flex; flex-direction: column; gap: 16px; font-size: 18px; line-height: 1.7">
+      <p style="margin: 0">[El problema: por qué hace falta un espacio para mujeres gamers]</p>
+      <p style="margin: 0">[Lo que hace Aquelarre para cambiarlo: torneos, eventos, contenido, comunidad]</p>
+    </div>
+  </section>
+
+  <div class="wrap" style="display: flex; justify-content: flex-end"><div class="ph gato">gato asomándose</div></div>
+
+  <section class="wrap" aria-labelledby="h-quienes" style="padding-top: 56px; padding-bottom: 72px; border-top: 1.5px solid var(--ink)">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 32px">
+      <div>
+        <h2 id="h-quienes" style="margin: 0 0 8px; font-size: clamp(32px, 4vw, 52px); font-weight: 800; letter-spacing: -0.03em">Quiénes hacen el aquelarre</h2>
+        <p style="margin: 0; color: var(--muted); font-size: 18px">El equipo y las creadoras, todas juntas.</p>
+      </div>
+      <div class="chips" role="group" aria-label="Filtrar personas" data-filtros="personas">
+        <button type="button" class="btn" data-f="*" aria-pressed="true">Todas</button>
+        <button type="button" class="btn" data-f="Equipo" aria-pressed="false">Equipo</button>
+        <button type="button" class="btn" data-f="Creadora" aria-pressed="false">Creadoras</button>
+      </div>
+    </div>
+    <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(min(calc(50% - 12px), 230px), 1fr))">
+      {personas.map((x) => (
+        <article class="lift box" data-grupo="personas" data-tag={x.tag} style="padding: 16px; display: flex; flex-direction: column; gap: 10px">
+          {x.foto
+            ? <div class="avatar-ph"><img src={x.foto} alt={`Foto de ${x.nombre}`} loading="lazy" /></div>
+            : <div class="ph avatar-ph">FOTO O AVATAR</div>}
+          <span style="align-self: flex-start; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border: 1.5px solid var(--ink); border-radius: 999px; padding: 3px 10px">{x.tag}</span>
+          <strong style="font-size: 20px">{x.nombre}</strong>
+          <span style="color: var(--muted)">{x.rol}</span>
+          <div style="display: flex; gap: 14px; font-size: 14px"><a href="#">[RED]</a><a href="#">[RED]</a></div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="wrap row oscura" style="gap: 24px; padding-top: 48px; padding-bottom: 48px; align-items: center; justify-content: space-between">
+    <div style="flex: 1 1 380px">
+      <h2 style="margin: 0 0 8px; font-size: 28px; font-weight: 800">¿Quieres ser parte?</h2>
+      <p style="margin: 0; color: #D0D0D0">[Cómo unirse a la comunidad o postularse como creadora]</p>
+    </div>
+    <div class="chips" style="gap: 12px">
+      <a class="btn" href="#">Entrar al Discord</a>
+      <a class="btn ghost" href="#">Soy creadora</a>
+    </div>
+  </section>
+</Prueba>

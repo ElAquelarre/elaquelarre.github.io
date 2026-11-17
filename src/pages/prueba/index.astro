@@ -1,0 +1,131 @@
+---
+import Prueba from '../../layouts/Prueba.astro';
+import { notasPublicadas, fechaBonita } from '../../lib/notas';
+
+const p = '/prueba';
+const notas = (await notasPublicadas()).slice(0, 3);
+const ejemplo = [
+  { cat: 'NOTICIA' }, { cat: 'OPINIÓN' }, { cat: 'COMUNIDAD' },
+];
+const hecho = [
+  { ph: 'FOTO DEL EVENTO', meta: 'JUN 2026 · ComicCon Bogotá', titulo: 'El Círculo de Aquelarre' },
+  { ph: 'FOTO DEL TORNEO', meta: 'AGO 2026 · Online', titulo: 'Torneo comunitario LoL ARAM' },
+  { ph: 'FOTO DEL EVENTO', meta: 'OCT 2026 · La Mecánica', titulo: 'Samhain — after de cosplay' },
+];
+const accesos = [
+  { href: `${p}/torneos/`, t: 'Jugar un torneo', d: 'Próximos torneos e inscripciones' },
+  { href: `${p}/entradas/`, t: 'Venir a un evento', d: 'Entradas para afters, juegotecas y más' },
+  { href: `${p}/notas/`, t: 'Leer las notas', d: 'Noticias del gaming femenino' },
+  { href: `${p}/apoyanos/`, t: 'Apoyar al aquelarre', d: 'Donaciones y marcas aliadas' },
+];
+---
+<Prueba title="Inicio">
+  <section class="wrap row" style="gap: 40px; padding-top: 72px; padding-bottom: 64px; align-items: center">
+    <div style="flex: 3 1 480px; display: flex; flex-direction: column; gap: 28px">
+      <p class="kicker">Comunidad gamer · Colombia</p>
+      <h1 style="margin: 0; font-size: clamp(40px, 7vw, 96px); font-weight: 800; letter-spacing: -0.03em; line-height: 1">[FRASE QUE DICE QUÉ ES AQUELARRE EN UNA LÍNEA]</h1>
+      <p style="margin: 0; font-size: clamp(20px, 2.4vw, 30px); line-height: 1.4; font-weight: 500">Aquí encuentras: <a href={`${p}/torneos/`}>torneos</a>, <a href={`${p}/lo-que-hemos-hecho/`}>eventos</a>, <a href={`${p}/nosotras/`}>comunidad</a> y <a href={`${p}/notas/`}>notas</a> sobre mujeres en el gaming.</p>
+      <div class="chips" style="gap: 12px">
+        <a class="btn dark" href="#unete">Únete a la comunidad</a>
+        <a class="btn" href={`${p}/lo-que-hemos-hecho/`}>Mira lo que hemos hecho</a>
+      </div>
+    </div>
+    <div class="ph" style="flex: 2 1 300px; height: 460px">GATO (nuevo diseño) — ilustración principal</div>
+  </section>
+
+  <section class="wrap" aria-labelledby="h-que" style="padding-top: 56px; padding-bottom: 56px; border-top: 1.5px solid var(--ink)">
+    <h2 id="h-que" class="sec" style="margin-bottom: 28px">¿Qué quieres hacer?</h2>
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 20px">
+      {accesos.map((a) => (
+        <a class="lift card box" href={a.href} style="gap: 14px; padding: 24px; min-height: 220px">
+          <div class="ph" style="height: 110px">ilustración</div>
+          <strong style="font-size: 22px">{a.t}</strong>
+          <span style="color: var(--muted)">{a.d}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <div class="wrap" style="display: flex; justify-content: flex-end"><div class="ph gato">gato asomándose</div></div>
+
+  <section class="wrap row" aria-labelledby="h-prox" style="padding-top: 56px; padding-bottom: 56px; background: var(--alt); align-items: stretch">
+    <div class="ph" style="flex: 1 1 340px; min-height: 320px">FOTO / PIEZA DEL PRÓXIMO EVENTO</div>
+    <div style="flex: 1 1 340px; display: flex; flex-direction: column; gap: 16px; justify-content: center">
+      <p class="kicker">Lo que viene</p>
+      <h2 id="h-prox" style="margin: 0; font-size: clamp(32px, 4vw, 44px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05">[NOMBRE DEL PRÓXIMO EVENTO O TORNEO]</h2>
+      <p style="margin: 0; font-size: 18px">[FECHA] · [LUGAR] · [CIUDAD]</p>
+      <div style="display: flex; gap: 12px">
+        <div style="border: 1.5px solid var(--ink); border-radius: 12px; padding: 12px 18px; text-align: center"><strong style="font-size: 32px; display: block">[00]</strong><span style="font-size: 13px; color: var(--muted)">días</span></div>
+        <div style="border: 1.5px solid var(--ink); border-radius: 12px; padding: 12px 18px; text-align: center"><strong style="font-size: 32px; display: block">[00]</strong><span style="font-size: 13px; color: var(--muted)">horas</span></div>
+      </div>
+      <div><a class="btn dark" href={`${p}/entradas/`}>Quiero ir</a></div>
+    </div>
+  </section>
+
+  <section class="wrap" aria-labelledby="h-hecho" style="padding-top: 64px; padding-bottom: 64px">
+    <div style="display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 28px">
+      <h2 id="h-hecho" class="sec">Lo que hemos hecho</h2>
+      <a class="btn" href={`${p}/lo-que-hemos-hecho/`}>Ver todo</a>
+    </div>
+    <div class="grid" style="gap: 20px">
+      {hecho.map((h) => (
+        <a class="lift card" href={`${p}/lo-que-hemos-hecho/`} style="gap: 12px">
+          <div class="ph" style="height: 260px; border-radius: 16px">{h.ph}</div>
+          <span class="meta">{h.meta}</span>
+          <strong style="font-size: 22px">{h.titulo}</strong>
+        </a>
+      ))}
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 40px; margin-top: 48px; border-top: 1.5px solid var(--ink); padding-top: 28px">
+      <div><strong style="font-size: 48px; letter-spacing: -0.03em">[N]</strong><p style="margin: 4px 0 0; color: var(--muted)">eventos realizados</p></div>
+      <div><strong style="font-size: 48px; letter-spacing: -0.03em">[N]</strong><p style="margin: 4px 0 0; color: var(--muted)">jugadoras en torneos</p></div>
+      <div><strong style="font-size: 48px; letter-spacing: -0.03em">[N]</strong><p style="margin: 4px 0 0; color: var(--muted)">personas en la comunidad</p></div>
+    </div>
+  </section>
+
+  <section class="wrap" aria-labelledby="h-notas" style="padding-top: 64px; padding-bottom: 64px; border-top: 1.5px solid var(--ink)">
+    <div style="display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 28px">
+      <h2 id="h-notas" class="sec">Últimas notas</h2>
+      <a class="btn" href={`${p}/notas/`}>Todas las notas</a>
+    </div>
+    <div class="grid" style="gap: 20px">
+      {notas.length > 0
+        ? notas.map((n) => (
+          <a class="lift card" href={`/notas/${n.id}/`}>
+            {n.data.portada
+              ? <img src={n.data.portada} alt="" style="width: 100%; height: 200px; object-fit: cover; border-radius: 16px" loading="lazy" />
+              : <div class="ph" style="height: 200px; border-radius: 16px">IMAGEN DE LA NOTA</div>}
+            <span class="meta">{n.data.categoria ?? 'Nota'} · {fechaBonita(n.data.fecha)}</span>
+            <strong style="font-size: 20px; line-height: 1.3">{n.data.titulo}</strong>
+          </a>
+        ))
+        : ejemplo.map((e) => (
+          <a class="lift card" href={`${p}/nota-ejemplo/`}>
+            <div class="ph" style="height: 200px; border-radius: 16px">IMAGEN DE LA NOTA</div>
+            <span class="meta">{e.cat} · [FECHA]</span>
+            <strong style="font-size: 20px; line-height: 1.3">[TÍTULO DE LA NOTA]</strong>
+          </a>
+        ))}
+    </div>
+  </section>
+
+  <section id="unete" class="wrap row oscura" aria-labelledby="h-unete" style="padding-top: 72px; padding-bottom: 72px; align-items: center">
+    <div style="flex: 2 1 400px; display: flex; flex-direction: column; gap: 16px">
+      <h2 id="h-unete" style="margin: 0; font-size: clamp(36px, 5vw, 64px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05">[INVITACIÓN A UNIRSE AL AQUELARRE]</h2>
+      <p style="margin: 0; font-size: 18px; line-height: 1.7; color: #D0D0D0">[Qué pasa en el Discord: partidas, eventos, conversación]</p>
+      <div class="chips" style="gap: 12px">
+        <a class="btn" href="#">Entrar al Discord</a>
+        <a class="btn ghost" href="https://www.instagram.com/aql.team/">Instagram @aql.team</a>
+      </div>
+    </div>
+    <div class="ph" style="flex: 1 1 240px; height: 240px; background: #2A2A2A; color: #CFCFCF; border-color: #777">GATO (nuevo diseño)</div>
+  </section>
+
+  <section class="wrap row" aria-labelledby="h-apoyo" style="gap: 24px; padding-top: 48px; padding-bottom: 48px; align-items: center; justify-content: space-between">
+    <h2 id="h-apoyo" style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.02em; flex: 1 1 380px">¿Quieres que el aquelarre siga creciendo?</h2>
+    <div class="chips" style="gap: 12px">
+      <a class="btn dark" href={`${p}/apoyanos/`}>Donar</a>
+      <a class="btn" href={`${p}/apoyanos/#marcas`}>Soy una marca</a>
+    </div>
+  </section>
+</Prueba>

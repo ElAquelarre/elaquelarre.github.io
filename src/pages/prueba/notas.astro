@@ -1,0 +1,87 @@
+---
+import Prueba from '../../layouts/Prueba.astro';
+import AutoraTag from '../../components/Autora.astro';
+import { notasPublicadas, autoraDe, fechaBonita } from '../../lib/notas';
+
+// Si ya hay notas reales (subidas desde Pages CMS) se muestran; si no, tarjetas de ejemplo.
+const p = '/prueba';
+const notas = await notasPublicadas();
+const items = await Promise.all(notas.map(async (n) => ({ nota: n, autora: await autoraDe(n) })));
+const [destacada, ...resto] = items;
+const ejemplo = ['Noticias', 'Opinión', 'Comunidad', 'Noticias', 'Eventos', 'Opinión'];
+const filtros = ['Noticias', 'Opinión', 'Comunidad', 'Eventos'];
+---
+<Prueba title="Notas">
+  <section class="wrap" style="padding-top: 72px; padding-bottom: 32px; display: flex; flex-direction: column; gap: 20px">
+    <p class="kicker">Blog</p>
+    <h1 class="titulo">Notas</h1>
+    <p style="margin: 0; font-size: 20px; line-height: 1.7; max-width: 52ch">[Una línea: noticias y notas sobre mujeres en el gaming, escritas por el aquelarre]</p>
+    <div class="chips" role="group" aria-label="Filtrar por categoría" data-filtros="notas" style="margin-top: 8px">
+      <button type="button" class="btn" data-f="*" aria-pressed="true">Todas</button>
+      {filtros.map((f) => <button type="button" class="btn" data-f={f} aria-pressed="false">{f}</button>)}
+    </div>
+  </section>
+
+  <section class="wrap" aria-label="Nota destacada" style="padding-top: 24px; padding-bottom: 48px">
+    {destacada
+      ? (
+        <a class="lift row box" href={`/notas/${destacada.nota.id}/`} style="text-decoration: none; color: var(--ink); border-radius: 20px; align-items: stretch">
+          {destacada.nota.data.portada
+            ? <img src={destacada.nota.data.portada} alt="" style="flex: 3 1 400px; min-height: 360px; object-fit: cover; border-radius: 12px" />
+            : <div class="ph" style="flex: 3 1 400px; min-height: 360px; border-radius: 12px">IMAGEN DE LA NOTA DESTACADA</div>}
+          <div style="flex: 2 1 300px; display: flex; flex-direction: column; gap: 14px; justify-content: center">
+            <span class="meta">Destacada · {destacada.nota.data.categoria ?? 'Nota'} · {fechaBonita(destacada.nota.data.fecha)}</span>
+            <strong style="font-size: clamp(28px, 3vw, 36px); letter-spacing: -0.02em; line-height: 1.1">{destacada.nota.data.titulo}</strong>
+            {destacada.nota.data.resumen && <span style="font-size: 18px; color: #333; line-height: 1.7">{destacada.nota.data.resumen}</span>}
+            <AutoraTag autora={destacada.autora} />
+          </div>
+        </a>
+      )
+      : (
+        <a class="lift row box" href={`${p}/nota-ejemplo/`} style="text-decoration: none; color: var(--ink); border-radius: 20px; align-items: stretch">
+          <div class="ph" style="flex: 3 1 400px; min-height: 360px; border-radius: 12px">IMAGEN DE LA NOTA DESTACADA</div>
+          <div style="flex: 2 1 300px; display: flex; flex-direction: column; gap: 14px; justify-content: center">
+            <span class="meta">Destacada · Noticia · [FECHA]</span>
+            <strong style="font-size: clamp(28px, 3vw, 36px); letter-spacing: -0.02em; line-height: 1.1">[TÍTULO DE LA NOTA DESTACADA]</strong>
+            <span style="font-size: 18px; color: #333; line-height: 1.7">[Resumen de dos líneas]</span>
+            <span style="font-size: 14px; color: var(--muted)">Por [AUTORA] · [N] min de lectura</span>
+          </div>
+        </a>
+      )}
+  </section>
+
+  <section class="wrap" aria-label="Todas las notas" style="padding-top: 24px; padding-bottom: 56px">
+    <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 28px">
+      {destacada
+        ? resto.map(({ nota }) => (
+          <a class="lift card" href={`/notas/${nota.id}/`} data-grupo="notas" data-tag={nota.data.categoria ?? ''}>
+            {nota.data.portada
+              ? <img src={nota.data.portada} alt="" style="width: 100%; height: 210px; object-fit: cover; border-radius: 16px" loading="lazy" />
+              : <div class="ph" style="height: 210px; border-radius: 16px">IMAGEN</div>}
+            <span class="meta">{nota.data.categoria ?? 'Nota'} · {fechaBonita(nota.data.fecha)}</span>
+            <strong style="font-size: 21px; line-height: 1.3">{nota.data.titulo}</strong>
+            {nota.data.resumen && <span style="color: var(--muted)">{nota.data.resumen}</span>}
+          </a>
+        ))
+        : ejemplo.map((c) => (
+          <a class="lift card" href={`${p}/nota-ejemplo/`} data-grupo="notas" data-tag={c}>
+            <div class="ph" style="height: 210px; border-radius: 16px">IMAGEN</div>
+            <span class="meta">{c} · [FECHA]</span>
+            <strong style="font-size: 21px; line-height: 1.3">[TÍTULO DE LA NOTA]</strong>
+            <span style="color: var(--muted)">[Resumen de una línea]</span>
+          </a>
+        ))}
+    </div>
+    <div style="display: flex; justify-content: center; margin-top: 40px"><button type="button" class="btn">Cargar más notas</button></div>
+  </section>
+
+  <div class="wrap" style="display: flex"><div class="ph gato">gato asomándose</div></div>
+
+  <section class="wrap row oscura" style="gap: 24px; padding-top: 48px; padding-bottom: 48px; align-items: center; justify-content: space-between">
+    <div style="flex: 1 1 380px">
+      <h2 style="margin: 0 0 8px; font-size: 28px; font-weight: 800">¿Quieres escribir para el aquelarre?</h2>
+      <p style="margin: 0; color: #D0D0D0">[Cómo proponer una nota]</p>
+    </div>
+    <a class="btn" href="#">Proponer una nota</a>
+  </section>
+</Prueba>
