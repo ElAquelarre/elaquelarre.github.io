@@ -1,14 +1,13 @@
 ---
 import Prueba from '../../layouts/Prueba.astro';
+import Album from '../../components/Album.astro';
+import { eventosPublicados, mesAnio, dondeFue } from '../../lib/eventos';
 
 const p = '/prueba';
-const casos = [
-  { cat: 'Activaciones', meta: 'ACTIVACIÓN · JUN 2026', titulo: 'El Círculo de Aquelarre', lugar: 'ComicCon Bogotá' },
-  { cat: 'Torneos', meta: 'TORNEO · AGO 2026', titulo: 'Torneo comunitario LoL ARAM', lugar: '29–30 de agosto' },
-  { cat: 'Eventos', meta: 'EVENTO · SEP 2026', titulo: 'Juegoteca Walpurgis', lugar: 'HONA, Cali' },
-  { cat: 'Eventos', meta: 'EVENTO · OCT 2026', titulo: 'Samhain — after de cosplay', lugar: 'La Mecánica' },
-];
-const filtros = ['Eventos', 'Torneos', 'Activaciones', 'Contenido'];
+const eventos = await eventosPublicados();
+const destacado = eventos.find((e) => e.data.destacado) ?? eventos[0];
+const filtros = ['Evento', 'Torneo', 'Activación', 'Contenido'];
+const plural: Record<string, string> = { Evento: 'Eventos', Torneo: 'Torneos', Activación: 'Activaciones', Contenido: 'Contenido' };
 ---
 <Prueba title="Lo que hemos hecho">
   <section class="wrap" style="padding-top: 72px; padding-bottom: 40px; display: flex; flex-direction: column; gap: 20px">
@@ -17,36 +16,33 @@ const filtros = ['Eventos', 'Torneos', 'Activaciones', 'Contenido'];
     <p style="margin: 0; font-size: 20px; line-height: 1.7; max-width: 52ch">[Una línea: eventos, torneos y activaciones que ha hecho Aquelarre. Sirve también para mostrar a marcas.]</p>
   </section>
 
-  <section class="wrap row" aria-labelledby="h-dest" style="padding-top: 32px; padding-bottom: 56px; align-items: stretch">
-    <div class="ph" style="flex: 3 1 440px; min-height: 420px; border-radius: 16px">GALERÍA DE FOTOS DEL EVENTO DESTACADO</div>
-    <div style="flex: 2 1 320px; display: flex; flex-direction: column; gap: 16px; justify-content: center">
-      <span class="meta">Destacado · Activación · Jun 2026</span>
-      <h2 id="h-dest" style="margin: 0; font-size: clamp(32px, 4vw, 44px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05">El Círculo de Aquelarre</h2>
-      <p style="margin: 0; font-size: 18px; line-height: 1.7">ComicCon Bogotá, 26–29 de junio. [Qué fue la activación en dos líneas]</p>
-      <div style="display: flex; gap: 28px; flex-wrap: wrap">
-        <div><strong style="font-size: 36px">[N]</strong><p style="margin: 2px 0 0; color: var(--muted)">personas participaron</p></div>
-        <div><strong style="font-size: 36px">[N]</strong><p style="margin: 2px 0 0; color: var(--muted)">días</p></div>
+  {destacado && (
+    <section class="wrap row" aria-labelledby="h-dest" style="padding-top: 32px; padding-bottom: 56px; align-items: stretch">
+      <a href={`${p}/eventos/${destacado.id}/`} class="lift" style="flex: 3 1 440px; min-height: 420px; display: block">
+        {destacado.data.portada
+          ? <img src={destacado.data.portada} alt="" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px" />
+          : <div class="ph" style="height: 100%; min-height: 420px; border-radius: 16px">FOTO DEL EVENTO DESTACADO</div>}
+      </a>
+      <div style="flex: 2 1 320px; display: flex; flex-direction: column; gap: 16px; justify-content: center">
+        <span class="meta">Destacado · {destacado.data.tipo} · {mesAnio(destacado.data.fecha)}</span>
+        <h2 id="h-dest" style="margin: 0; font-size: clamp(32px, 4vw, 44px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05">{destacado.data.nombre}</h2>
+        <p style="margin: 0; font-size: 18px; line-height: 1.7">{dondeFue(destacado)}. {destacado.data.resumen}</p>
+        <div style="display: flex; gap: 28px; flex-wrap: wrap">
+          <div><strong style="font-size: 36px">[N]</strong><p style="margin: 2px 0 0; color: var(--muted)">personas participaron</p></div>
+          <div><strong style="font-size: 36px">[N]</strong><p style="margin: 2px 0 0; color: var(--muted)">días</p></div>
+        </div>
+        <div><a class="btn dark" href={`${p}/eventos/${destacado.id}/`}>Ver el evento</a></div>
       </div>
-      <div class="ph" style="height: 64px">LOGOS DE ALIADOS DEL EVENTO</div>
-    </div>
-  </section>
+    </section>
+  )}
 
   <section class="wrap" aria-labelledby="h-todo" style="padding-top: 56px; padding-bottom: 72px; border-top: 1.5px solid var(--ink)">
-    <h2 id="h-todo" class="sec" style="margin-bottom: 20px">Todo el archivo</h2>
+    <h2 id="h-todo" class="sec" style="margin-bottom: 20px">El álbum</h2>
     <div class="chips" role="group" aria-label="Filtrar por tipo" data-filtros="casos" style="margin-bottom: 28px">
       <button type="button" class="btn" data-f="*" aria-pressed="true">Todo</button>
-      {filtros.map((f) => <button type="button" class="btn" data-f={f} aria-pressed="false">{f}</button>)}
+      {filtros.map((f) => <button type="button" class="btn" data-f={f} aria-pressed="false">{plural[f]}</button>)}
     </div>
-    <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr))">
-      {casos.map((c) => (
-        <a class="lift card" href="#" data-grupo="casos" data-tag={c.cat}>
-          <div class="ph" style="height: 240px; border-radius: 16px">FOTO</div>
-          <span class="meta">{c.meta}</span>
-          <strong style="font-size: 22px">{c.titulo}</strong>
-          <span style="color: var(--muted)">{c.lugar}</span>
-        </a>
-      ))}
-    </div>
+    <Album eventos={eventos} base={p} filtrable />
   </section>
 
   <section class="wrap row oscura" style="gap: 24px; padding-top: 48px; padding-bottom: 48px; align-items: center; justify-content: space-between">

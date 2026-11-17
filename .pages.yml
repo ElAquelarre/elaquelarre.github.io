@@ -1,5 +1,5 @@
 # Configuración del panel Pages CMS (https://app.pagescms.org)
-# Las notas y autoras se guardan en src/content/ y las imágenes en public/media/.
+# Las notas, autoras y eventos se guardan en src/content/ y las imágenes en public/media/.
 
 media:
   input: public/media
@@ -88,3 +88,66 @@ content:
         description: Cuadrada y liviana. Se ve pequeñita junto a tus notas.
         options:
           rename: safe
+
+  - name: eventos
+    label: Eventos
+    type: collection
+    path: src/content/eventos
+    format: yaml-frontmatter
+    filename:
+      template: "{primary}.md"
+      field: create
+    view:
+      primary: nombre
+      fields: [nombre, fecha, tipo, destacado]
+    fields:
+      - name: nombre
+        label: Nombre del evento
+        type: string
+        required: true
+      - name: fecha
+        label: Fecha (o primer día)
+        type: date
+        required: true
+        description: En la web solo se ve el mes y el año.
+      - name: tipo
+        label: Tipo
+        type: select
+        required: true
+        options:
+          values: [Evento, Torneo, Activación, Contenido]
+      - name: lugar
+        label: Lugar
+        type: string
+        description: Por ejemplo «La Mecánica», «ComicCon Bogotá» u «Online».
+      - name: ciudad
+        label: Ciudad
+        type: string
+      - name: resumen
+        label: Resumen
+        type: text
+        description: Una frase. Sale al pasar el mouse por la foto y arriba en la página del evento.
+      - name: portada
+        label: Foto de portada
+        type: image
+        description: La que sale en el álbum. Mejor una foto con gente.
+        options:
+          rename: safe
+      - name: fotos
+        label: Fotos del evento
+        type: image
+        list: true
+        description: Todas las que quieran mostrar en la página del evento. Livianas, por favor.
+        options:
+          rename: safe
+      - name: destacado
+        label: Destacar arriba en «Lo que hemos hecho»
+        type: boolean
+        default: false
+      - name: borrador
+        label: Borrador (todavía no publicar)
+        type: boolean
+        default: false
+      - name: body
+        label: Qué pasó
+        type: rich-text

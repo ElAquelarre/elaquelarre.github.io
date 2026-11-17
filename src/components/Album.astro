@@ -1,0 +1,70 @@
+---
+// Álbum de «Lo que hemos hecho»: fotos de distintos tamaños. Al pasar el mouse (o con el teclado)
+// aparece el nombre del evento; al hacer clic se abre su página.
+import type { Evento } from '../lib/eventos';
+import { mesAnio, dondeFue } from '../lib/eventos';
+
+interface Props {
+  eventos: Evento[];
+  base: string;
+  filtrable?: boolean;
+}
+const { eventos, base, filtrable = false } = Astro.props;
+// Anchos que se repiten en una rejilla de 6 columnas; cada fila suma 6 para que no queden huecos.
+// Si la última fila queda incompleta, la última foto se estira hasta el borde.
+function anchos(n: number, patron: number[], cols: number): number[] {
+  const out: number[] = [];
+  let fila = 0;
+  for (let i = 0; i < n; i++) {
+    let w = Math.min(patron[i % patron.length], cols);
+    if (fila + w > cols) w = cols - fila;
+    out.push(w);
+    fila = (fila + w) % cols;
+  }
+  if (fila !== 0) out[n - 1] += cols - fila;
+  return out;
+}
+const desk = anchos(eventos.length, [4, 2, 3, 3, 2, 2, 2, 2, 4], 6);
+const movil = anchos(eventos.length, [2, 1, 1], 2);
+---
+<div class="album">
+  {eventos.map((e, i) => (
+    <a
+      class={`foto${i === 0 ? ' primera' : ''}`}
+      style={`--c: ${desk[i]}; --cm: ${movil[i]}`}
+      href={`${base}/eventos/${e.id}/`}
+      data-grupo={filtrable ? 'casos' : undefined}
+      data-tag={filtrable ? e.data.tipo : undefined}
+    >
+      {e.data.portada
+        ? <img src={e.data.portada} alt="" loading="lazy" />
+        : <span class="ph vacia" aria-hidden="true">FOTO</span>}
+      <span class="pie">
+        <span class="meta">{e.data.tipo} · {mesAnio(e.data.fecha)}</span>
+        <strong>{e.data.nombre}</strong>
+        {dondeFue(e) && <span class="donde">{dondeFue(e)}</span>}
+      </span>
+    </a>
+  ))}
+</div>
+
+<style>
+  .album { display: grid; grid-template-columns: repeat(6, 1fr); grid-auto-rows: 140px; gap: 10px; }
+  .foto { position: relative; display: block; overflow: hidden; border-radius: 14px; text-decoration: none; color: #fff; grid-column: span var(--c); grid-row: span 2; }
+  .foto img, .foto .vacia { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 14px; transition: transform .5s cubic-bezier(.22,1,.36,1); }
+  .foto .pie { position: absolute; inset: auto 0 0 0; padding: 40px 16px 14px; display: flex; flex-direction: column; gap: 2px; background: linear-gradient(to top, rgba(0,0,0,.78), rgba(0,0,0,0)); opacity: 0; transform: translateY(8px); transition: opacity .3s ease, transform .3s cubic-bezier(.22,1,.36,1); }
+  .foto .pie .meta { color: #E6E6E6; }
+  .foto .pie strong { font-size: 20px; line-height: 1.2; }
+  .foto .pie .donde { font-size: 14px; color: #E6E6E6; }
+  .foto:hover .pie, .foto:focus-visible .pie { opacity: 1; transform: none; }
+  .foto:hover img, .foto:hover .vacia { transform: scale(1.04); }
+  .foto:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  /* En pantallas táctiles no hay mouse: el nombre se ve siempre */
+  @media (hover: none) { .foto .pie { opacity: 1; transform: none; } }
+  @media (max-width: 700px) {
+    .album { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 110px; gap: 8px; }
+    .foto, .foto.primera { grid-column: span var(--cm); grid-row: span 2; }
+    .foto .pie strong { font-size: 17px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .foto img, .foto .vacia, .foto .pie { transition: none; } }
+</style>

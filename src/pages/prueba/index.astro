@@ -1,17 +1,15 @@
 ---
 import Prueba from '../../layouts/Prueba.astro';
 import { notasPublicadas, fechaBonita } from '../../lib/notas';
+import Album from '../../components/Album.astro';
+import { eventosPublicados } from '../../lib/eventos';
 
 const p = '/prueba';
 const notas = (await notasPublicadas()).slice(0, 3);
 const ejemplo = [
   { cat: 'NOTICIA' }, { cat: 'OPINIÓN' }, { cat: 'COMUNIDAD' },
 ];
-const hecho = [
-  { ph: 'FOTO DEL EVENTO', meta: 'JUN 2026 · ComicCon Bogotá', titulo: 'El Círculo de Aquelarre' },
-  { ph: 'FOTO DEL TORNEO', meta: 'AGO 2026 · Online', titulo: 'Torneo comunitario LoL ARAM' },
-  { ph: 'FOTO DEL EVENTO', meta: 'OCT 2026 · La Mecánica', titulo: 'Samhain — after de cosplay' },
-];
+const eventos = (await eventosPublicados()).slice(0, 5);
 const accesos = [
   { href: `${p}/torneos/`, t: 'Jugar un torneo', d: 'Próximos torneos e inscripciones' },
   { href: `${p}/entradas/`, t: 'Venir a un evento', d: 'Entradas para afters, juegotecas y más' },
@@ -48,34 +46,12 @@ const accesos = [
 
   <div class="wrap" style="display: flex; justify-content: flex-end"><div class="ph gato">gato asomándose</div></div>
 
-  <section class="wrap row" aria-labelledby="h-prox" style="padding-top: 56px; padding-bottom: 56px; background: var(--alt); align-items: stretch">
-    <div class="ph" style="flex: 1 1 340px; min-height: 320px">FOTO / PIEZA DEL PRÓXIMO EVENTO</div>
-    <div style="flex: 1 1 340px; display: flex; flex-direction: column; gap: 16px; justify-content: center">
-      <p class="kicker">Lo que viene</p>
-      <h2 id="h-prox" style="margin: 0; font-size: clamp(32px, 4vw, 44px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05">[NOMBRE DEL PRÓXIMO EVENTO O TORNEO]</h2>
-      <p style="margin: 0; font-size: 18px">[FECHA] · [LUGAR] · [CIUDAD]</p>
-      <div style="display: flex; gap: 12px">
-        <div style="border: 1.5px solid var(--ink); border-radius: 12px; padding: 12px 18px; text-align: center"><strong style="font-size: 32px; display: block">[00]</strong><span style="font-size: 13px; color: var(--muted)">días</span></div>
-        <div style="border: 1.5px solid var(--ink); border-radius: 12px; padding: 12px 18px; text-align: center"><strong style="font-size: 32px; display: block">[00]</strong><span style="font-size: 13px; color: var(--muted)">horas</span></div>
-      </div>
-      <div><a class="btn dark" href={`${p}/entradas/`}>Quiero ir</a></div>
-    </div>
-  </section>
-
   <section class="wrap" aria-labelledby="h-hecho" style="padding-top: 64px; padding-bottom: 64px">
     <div style="display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 28px">
       <h2 id="h-hecho" class="sec">Lo que hemos hecho</h2>
       <a class="btn" href={`${p}/lo-que-hemos-hecho/`}>Ver todo</a>
     </div>
-    <div class="grid" style="gap: 20px">
-      {hecho.map((h) => (
-        <a class="lift card" href={`${p}/lo-que-hemos-hecho/`} style="gap: 12px">
-          <div class="ph" style="height: 260px; border-radius: 16px">{h.ph}</div>
-          <span class="meta">{h.meta}</span>
-          <strong style="font-size: 22px">{h.titulo}</strong>
-        </a>
-      ))}
-    </div>
+    <Album eventos={eventos} base={p} />
     <div style="display: flex; flex-wrap: wrap; gap: 40px; margin-top: 48px; border-top: 1.5px solid var(--ink); padding-top: 28px">
       <div><strong style="font-size: 48px; letter-spacing: -0.03em">[N]</strong><p style="margin: 4px 0 0; color: var(--muted)">eventos realizados</p></div>
       <div><strong style="font-size: 48px; letter-spacing: -0.03em">[N]</strong><p style="margin: 4px 0 0; color: var(--muted)">jugadoras en torneos</p></div>

@@ -1,0 +1,62 @@
+---
+import Prueba from '../../../layouts/Prueba.astro';
+import Album from '../../../components/Album.astro';
+import { render } from 'astro:content';
+import { eventosPublicados, mesAnio, dondeFue, type Evento } from '../../../lib/eventos';
+
+export async function getStaticPaths() {
+  const eventos = await eventosPublicados();
+  return eventos.map((e) => ({ params: { id: e.id }, props: { evento: e } }));
+}
+
+const { evento } = Astro.props as { evento: Evento };
+const { Content } = await render(evento);
+const p = '/prueba';
+const fotos = evento.data.fotos ?? [];
+const otros = (await eventosPublicados()).filter((e) => e.id !== evento.id).slice(0, 3);
+// Alturas variadas para los huecos mientras no haya fotos
+const huecos = [320, 220, 260, 380, 240, 300];
+---
+<Prueba title={evento.data.nombre}>
+  <article>
+    <header class="wrap" style="padding-top: 56px; padding-bottom: 40px; display: flex; flex-direction: column; gap: 18px">
+      <a href={`${p}/lo-que-hemos-hecho/`} style="font-size: 15px; font-weight: 600">← Lo que hemos hecho</a>
+      <span class="meta">{evento.data.tipo} · {mesAnio(evento.data.fecha)}</span>
+      <h1 class="titulo">{evento.data.nombre}</h1>
+      {dondeFue(evento) && <p style="margin: 0; font-size: 20px; font-weight: 600">{dondeFue(evento)}</p>}
+      {evento.data.resumen && <p style="margin: 0; font-size: 20px; line-height: 1.6; max-width: 52ch; color: #333">{evento.data.resumen}</p>}
+    </header>
+
+    <section class="wrap" aria-label="Fotos del evento" style="padding-bottom: 48px">
+      <div class="galeria">
+        {fotos.length > 0
+          ? fotos.map((f) => <img src={f} alt="" loading="lazy" />)
+          : huecos.map((h) => <div class="ph" style={`height: ${h}px; border-radius: 14px`}>FOTO DEL EVENTO</div>)}
+      </div>
+    </section>
+
+    <section class="wrap row" style="gap: 40px; padding-top: 48px; padding-bottom: 56px; border-top: 1.5px solid var(--ink)">
+      <h2 class="sec" style="flex: 1 1 240px">Qué pasó</h2>
+      <div class="cuerpo" style="flex: 2 1 420px; font-size: 18px; line-height: 1.7"><Content /></div>
+    </section>
+  </article>
+
+  {otros.length > 0 && (
+    <section class="wrap" aria-labelledby="h-otros" style="padding-top: 48px; padding-bottom: 64px; border-top: 1.5px solid var(--ink)">
+      <h2 id="h-otros" class="sec" style="margin-bottom: 24px">Más del álbum</h2>
+      <Album eventos={otros} base={p} />
+    </section>
+  )}
+
+  <section class="wrap row oscura" style="gap: 24px; padding-top: 48px; padding-bottom: 48px; align-items: center; justify-content: space-between">
+    <h2 style="margin: 0; font-size: 28px; font-weight: 800; flex: 1 1 380px">¿Quieres hacer algo con el aquelarre?</h2>
+    <a class="btn" href={`${p}/apoyanos/#marcas`}>Trabajemos juntas</a>
+  </section>
+</Prueba>
+
+<style>
+  .galeria { columns: 3 260px; column-gap: 12px; }
+  .galeria > * { break-inside: avoid; margin-bottom: 12px; width: 100%; display: block; }
+  .galeria img { border-radius: 14px; }
+  .cuerpo :global(p) { margin: 0 0 16px; }
+</style>

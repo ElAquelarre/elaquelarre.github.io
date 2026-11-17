@@ -28,4 +28,21 @@ const notas = defineCollection({
   }),
 });
 
-export const collections = { autoras, notas };
+// Eventos, torneos y activaciones: alimentan el álbum de «Lo que hemos hecho» y cada uno tiene su página.
+const eventos = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/eventos' }),
+  schema: z.object({
+    nombre: z.string(),
+    fecha: z.coerce.date(),
+    tipo: z.enum(['Evento', 'Torneo', 'Activación', 'Contenido']),
+    lugar: z.string().optional().nullable(),
+    ciudad: z.string().optional().nullable(),
+    resumen: z.string().optional().nullable(),
+    portada: z.string().optional().nullable(),
+    fotos: z.array(z.string()).optional().nullable(),
+    destacado: z.boolean().optional().default(false),
+    borrador: z.boolean().optional().default(false),
+  }),
+});
+
+export const collections = { autoras, notas, eventos };
