@@ -78,9 +78,11 @@ const menu = [
 
       /* Cabecera y menú */
       header.site { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 20px; padding-bottom: 20px; border-bottom: 1.5px solid var(--ink); }
-      .logo-ph { width: 160px; height: 52px; }
+      .logo { display: block; height: 80px; width: auto; }
+      header.site { padding-top: 14px; padding-bottom: 14px; }
+      footer.site .logo { height: 100px; }
       .solo-ancho { display: inline-flex; }
-      @media (max-width: 520px) { .solo-ancho { display: none; } .logo-ph { width: 130px; height: 44px; } }
+      @media (max-width: 520px) { .solo-ancho { display: none; } .logo { height: 64px; } }
       #menu { position: fixed; inset: 0; z-index: 50; background: #fff; overflow-y: auto; padding-top: 20px; padding-bottom: 48px; display: flex; flex-direction: column; gap: 32px; }
       #menu[hidden] { display: none; }
       .bigl { font-size: clamp(32px, 6vw, 72px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; text-decoration: none; color: var(--ink); }
@@ -97,7 +99,7 @@ const menu = [
     </div>
 
     <header class="site wrap">
-      <a href={`${p}/`} aria-label="Aquelarre, inicio" style="text-decoration: none"><div class="ph logo-ph">LOGO AQUELARRE</div></a>
+      <a href={`${p}/`} aria-label="Aquelarre, inicio" style="text-decoration: none"><img class="logo" src="/assets/logo-aql-negro.png" alt="Aquelarre" width="80" height="64" /></a>
       <div style="display: flex; align-items: center; gap: 12px">
         <a class="btn solo-ancho" href={`${p}/#unete`}>Únete al Discord</a>
         <button class="icon" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu" data-menu-abrir>
@@ -108,7 +110,7 @@ const menu = [
 
     <nav id="menu" class="wrap" aria-label="Menú principal" hidden>
       <div style="display: flex; justify-content: space-between; align-items: center">
-        <div class="ph logo-ph">LOGO AQUELARRE</div>
+        <img class="logo" src="/assets/logo-aql-negro.png" alt="Aquelarre" width="80" height="64" />
         <button class="icon" type="button" aria-label="Cerrar menú" data-menu-cerrar>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" /></svg>
         </button>
@@ -132,7 +134,7 @@ const menu = [
 
     <footer class="site wrap">
       <div>
-        <div class="ph logo-ph">LOGO AQUELARRE</div>
+        <img class="logo" src="/assets/logo-aql-negro.png" alt="Aquelarre" width="80" height="64" />
         <p style="margin: 4px 0 0; font-weight: 600">Hasta la próxima luna llena.</p>
       </div>
       <nav aria-label="Pie de página">
